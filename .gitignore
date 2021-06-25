@@ -1,0 +1,6 @@
+.vscode/
+lib/
+omnisharp.json
+*.dib
+messages.ini
+*.7z
