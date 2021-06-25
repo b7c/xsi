@@ -39,8 +39,8 @@ async Task __cancelable(Func<CancellationToken, Task> task) {
 Incoming In => __xtn.In;
 Outgoing Out => __xtn.Out;
 ClientType ClientType => __xtn.ClientType;
-void Send(Header header, params object[] values)
-    => __xtn.Send(header, values);
+void Send(Header header, params object[] values) => __xtn.Send(header, values);
+void Send(IReadOnlyPacket packet) => __xtn.Send(packet);
 Task<IPacket> ReceiveAsync(int timeout, params Header[] targetHeaders)
     => __cancelable(ct => __xtn.ReceiveAsync(timeout, ct, targetHeaders));
 IPacket Receive(int timeout, params Header[] targetHeaders)
