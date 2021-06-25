@@ -65,3 +65,82 @@ p.ReadString() // Returns the amount of credits in your wallet
 If it gets stuck awaiting the receiver task, you can press Ctrl+C to cancel it.\
 A cancellation token source is created and passed into each receive/delay task to allow this.\
 Use `Delay(ms)` or `await DelayAsync(ms)` to delay execution.
+
+### Game state
+Game state is being managed in the background to provide information about the current state of the room, its furni and entities, etc.
+
+Get the current room ID:
+```cs
+RoomId
+```
+
+List all users in the room:
+```cs
+foreach (var user in Users) WriteLine(user.Name);
+```
+
+Count furni in the room:
+```cs
+Furni.Count()
+FloorItems.Count()
+WallItems.Count()
+```
+
+### Interactions
+There are various methods defined in `xsi-globals.csx` to make it easier to interact with the game.\
+These are just a few of the methods available.
+
+Talk, shout or whisper:
+```cs
+Talk("Hello, world");
+Shout("Hello, world!");
+Whisper("world", "Hello, world.");
+```
+
+Walk to a tile:
+```cs
+Walk(5, 6);
+```
+
+Search for a user and grab their ID, then get their profile by their ID:
+```cs
+var result = SearchUser("name");
+result.Id
+var profile = GetProfile(result.Id);
+profile
+```
+
+### Example scripts
+Output the current room's floor plan to a text file:
+```cs
+File.WriteAllText($"floorplan-{Room.Id}.txt", FloorPlan.ToString())
+```
+
+Send a friend request to everyone in the room:
+```cs
+foreach (var user in Users) {
+  Send(Out.RequestFriend, user.Name);
+  WriteLine($"> {user.Name}");
+  Delay(1000);
+}
+```
+
+Download all photos in a room to the directory `photos/roomId`:
+```cs
+string dir = $"photos/{Room.Id}";
+Directory.CreateDirectory(dir);
+var photos = WallItems.OfKind(4597).ToArray(); // .com furni kind, furni data support will be added soon
+for (int i = 0; i < photos.Length; i++) {
+  string filePath = Path.Combine($"photos/{Room.Id}", $"{photos[i].Id}.png");
+  if (File.Exists(filePath)) continue;
+  WriteLine($"Downloading {i+1}/{photos.Length}");
+  try {
+    var photoInfo = System.Text.Json.JsonSerializer.Deserialize<PhotoInfo>(photos[i].Data);
+    var photoData = await H.GetPhotoDataAsync(photoInfo.Id);
+    byte[] image = await H.DownloadPhotoAsync(photoData);
+    File.WriteAllBytes(filePath, image);
+  } catch (Exception ex) {
+    WriteLine($"Failed to download: {ex.Message}");
+  }
+}
+```
