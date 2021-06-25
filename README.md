@@ -9,7 +9,9 @@ An interactive C# scripting shell for G-Earth which utilizes the
 - Install the [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0).
   - Choose the installer for your operating system.
 - Install [dotnet-script](https://github.com/filipw/dotnet-script).
-  - Run `dotnet tool install -g dotnet-script` from the terminal.
+  - Run `dotnet tool install -g dotnet-script` in the terminal.
+- Download the latest release and place the files into a folder.
+- If needed, get the latest [messages.ini](https://github.com/b7c/Xabbo.Common/blob/master/Xabbo.Common/messages.ini) from Xabbo.Common and place it in the folder.
 
 ## How to run
 - Open a new terminal at the directory where the `xsi.csx` file is.
@@ -32,7 +34,7 @@ Out["PlaceObject"] // Will return the header for Out.PlaceRoomItem
 ```
 However this must be defined in `messages.ini` for it to be correctly mapped to the Unity message name.
 
-### Packets
+### Sending and receiving packets
 Shout "hello, world":
 ```cs
 Send(Out.Shout, "hello, world", 0)
@@ -61,5 +63,5 @@ var p = await recv;
 p.ReadString() // Returns the amount of credits in your wallet
 ```
 If it gets stuck awaiting the receiver task, you can press Ctrl+C to cancel it.\
-A cancellation token source is created and passed into each receive/delay task to allow this.
+A cancellation token source is created and passed into each receive/delay task to allow this.\
 Use `Delay(ms)` or `await DelayAsync(ms)` to delay execution.
