@@ -110,7 +110,7 @@ var profile = GetProfile(result.Id);
 profile
 ```
 
-### Example scripts
+## Example scripts
 Output the current room's floor plan to a text file:
 ```cs
 File.WriteAllText($"floorplan-{Room.Id}.txt", FloorPlan.ToString())
