@@ -55,7 +55,7 @@ Notice the send and receive are on the same line.\
 If you enter the send line first, it's likely the response to the packet would be received before you execute the next line to capture the packet.\
 A better way to do this could be to create a receiver task first, send the request and then await the task:
 ```cs
-var recv = await ReceiveAsync(-1, In.WalletBallance); // Use -1 for no timeout
+var recv = ReceiveAsync(-1, In.WalletBalance); // Use -1 for no timeout
 Send(Out.GetCredits);
 var p = await recv;
 p.ReadString() // Returns the amount of credits in your wallet
