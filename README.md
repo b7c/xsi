@@ -46,6 +46,11 @@ var p = new Packet(Out.Shout);
 p.WriteString("hello, world");
 p.WriteInt(0);
 Send(p);
+// OR
+var p = new Packet(Out.Shout)
+  .WriteString("hello, world")
+  .WriteInt(0);
+Send(p);
 ```
 
 Receive and read from a packet:
