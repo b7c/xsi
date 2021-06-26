@@ -3,6 +3,7 @@
 #load "xsi-xtn.csx"
 #load "xsi-globals.csx"
 
+using Xabbo.Messages;
 using Xabbo.Core;
 
 _ = __xtn.RunAsync();
