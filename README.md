@@ -1,5 +1,5 @@
 # Xabbo Script Interactive
-An interactive C# scripting shell for G-Earth which utilizes the
+An interactive C# scripting shell for [G-Earth](https://github.com/sirjonasxx/G-Earth) which utilizes the
 [Xabbo.Common](https://www.github.com/b7c/Xabbo.Common),
 [Xabbo.GEarth](https://www.github.com/b7c/Xabbo.GEarth) and
 [Xabbo.Core](https://www.github.com/b7c/Xabbo.Core) libraries.
