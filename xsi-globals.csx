@@ -50,6 +50,28 @@ IPacket Receive(int timeout, params Header[] targetHeaders)
 Task DelayAsync(int ms) => __cancelable(ct => Task.Delay(ms, ct));
 void Delay(int ms) => DelayAsync(ms).GetAwaiter().GetResult();
 
+// Client-side
+void Bubble(string message,
+    int index = -1,
+    int bubble = 0,
+    ChatType type = ChatType.Whisper) {
+  Send(type switch {
+      ChatType.Talk => In.Chat,
+      ChatType.Shout => In.Shout,
+      ChatType.Whisper => In.Whisper,
+      _ => throw new Exception("Invalid chat type.")
+  }, index, message, 0, bubble, 0, 0);
+}
+
+// Profile
+IUserData User => __xtn.ProfileManager.UserData;
+int? Credits => __xtn.ProfileManager.Credits;
+
+// Friends
+IEnumerable<IFriend> Friends => __xtn.FriendManager.Friends;
+bool IsFriend(long id) => __xtn.FriendManager.IsFriend(id);
+bool IsFriend(string name) => __xtn.FriendManager.IsFriend(name);
+
 // Room
 bool IsInRoom => __xtn.RoomManager.IsInRoom;
 long RoomId => __xtn.RoomManager.CurrentRoomId;
@@ -74,6 +96,18 @@ IBot GetBotById(long id) => Room?.GetEntityById<IBot>(id);
 IPet GetPet(int index) => Room?.GetEntity<IPet>(index);
 IPet GetPet(string name) => Room?.GetEntity<IPet>(name);
 IPet GetPetById(long id) => Room?.GetEntityById<IPet>(id);
+
+IRoomUser Self => Room?.GetEntityById<IRoomUser>(User?.Id ?? -1);
+
+// Trade
+bool IsTrading => __xtn.TradeManager.IsTrading;
+bool IsTrader => __xtn.TradeManager.IsTrader;
+bool HasAcceptedTrade => __xtn.TradeManager.HasAccepted;
+bool HasPartnerAcceptedTrade => __xtn.TradeManager.HasPartnerAccepted;
+bool IsTradeWaitingConfirmation => __xtn.TradeManager.IsWaitingConfirmation;
+IRoomUser TradePartner => __xtn.TradeManager.Partner;
+ITradeOffer OwnOffer => __xtn.TradeManager.OwnOffer;
+ITradeOffer PartnerOffer => __xtn.TradeManager.PartnerOffer;
 
 // Furni
 IEnumerable<IFurni> Furni => Room?.Furni ?? Enumerable.Empty<IFurni>();
