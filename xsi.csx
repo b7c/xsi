@@ -1,6 +1,7 @@
 #r "nuget: System.IO.Pipelines, 5.0.1"
 
-#load "xsi-xtn.csx"
+#load "xsi-loader.csx"
+#load "xsi-extension.csx"
 #load "xsi-globals.csx"
 
 using Xabbo.Messages;

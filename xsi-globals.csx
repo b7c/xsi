@@ -1,4 +1,4 @@
-#load "xsi-xtn.csx"
+#load "xsi-extension.csx"
 
 using System.Threading;
 using Xabbo;
