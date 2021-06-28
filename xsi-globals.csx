@@ -283,3 +283,29 @@ public void UpdateStackTile(long stackTileId, double height)
     => Send(Out.StackingHelperSetCaretHeight, (LegacyLong)stackTileId, (int)Math.Round(height * 100.0));
 void UpdateStackTile(IFloorItem stackTile, double height)
     => UpdateStackTile(stackTile.Id, height);
+
+// Navigator
+Task<NavigatorSearchResults> GetNavAsync(string category, string filter = "", int timeout = DEFAULT_TIMEOUT)
+    => __cancelable(ct => new SearchNavigatorTask(__xtn, category, filter).ExecuteAsync(timeout, ct));
+NavigatorSearchResults GetNav(string category, string filter = "", int timeout = DEFAULT_TIMEOUT)
+    => GetNavAsync(category, filter, timeout).GetAwaiter().GetResult();
+
+async Task<IEnumerable<IRoomInfo>> SearchNavAsync(string category, string filter = "", int timeout = DEFAULT_TIMEOUT)
+    => (await GetNavAsync(category, filter, timeout)).GetRooms();
+IEnumerable<IRoomInfo> SearchNav(string category, string filter = "", int timeout = DEFAULT_TIMEOUT)
+    => SearchNavAsync(category, filter, timeout).GetAwaiter().GetResult();
+
+async Task<IEnumerable<IRoomInfo>> QueryNavAsync(string query, int timeout = DEFAULT_TIMEOUT)
+    => (await GetNavAsync("query", query, timeout)).GetRooms();
+IEnumerable<IRoomInfo> QueryNav(string query, int timeout = DEFAULT_TIMEOUT)
+    => GetNav("query", query, timeout).GetRooms();
+
+Task<ICatalog> GetCatalogAsync(string mode = "NORMAL", int timeout = DEFAULT_TIMEOUT)
+    => __cancelable(ct => new GetCatalogTask(__xtn, mode).ExecuteAsync(timeout, ct));
+ICatalog GetCatalog(string mode = "NORMAL", int timeout = DEFAULT_TIMEOUT)
+    => GetCatalogAsync(mode, timeout).GetAwaiter().GetResult();
+
+Task<ICatalogPage> GetCatalogPageAsync(int pageId, string mode = "NORMAL", int timeout = DEFAULT_TIMEOUT)
+    => __cancelable(ct => new GetCatalogPageTask(__xtn, pageId, mode).ExecuteAsync(timeout, ct));
+ICatalogPage GetCatalogPage(int pageId, string mode = "NORMAL", int timeout = DEFAULT_TIMEOUT)
+    => GetCatalogPageAsync(pageId, mode, timeout).GetAwaiter().GetResult();
