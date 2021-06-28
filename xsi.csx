@@ -5,6 +5,10 @@
 #load "xsi-globals.csx"
 
 #load "util/game-data.csx"
+#load "util/intercepts.csx"
+#load "util/packet-deconstruction.csx"
+
+#load "util/future.csx"
 
 using Xabbo.Messages;
 using Xabbo.Core;
