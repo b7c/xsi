@@ -252,6 +252,8 @@ void MoveFloorItem(long id, int x, int y, int dir = 0) => Send(Out.MoveRoomItem,
 void MoveFloorItem(long id, (int X, int Y) location, int dir = 0) => MoveFloorItem(id, location.X, location.Y, dir);
 void MoveFloorItem(long id, Tile location, int dir = 0) => MoveFloorItem(id, location.X, location.Y, dir);
 
+void MoveWallItem(long id, WallLocation location) => Send(Out.MoveWallItem, (LegacyLong)id, location.ToString());
+
 void Move(IFloorItem item, int x, int y, int dir = -1) {
     if (dir == -1) dir = item.Direction;
     MoveFloorItem(item.Id, x, y, dir);
@@ -259,7 +261,25 @@ void Move(IFloorItem item, int x, int y, int dir = -1) {
 void Move(IFloorItem item, (int X, int Y) location, int dir = -1) => Move(item, location.X, location.Y, dir);
 void Move(IFloorItem item, Tile location, int dir = -1) => Move(item, location.X, location.Y, dir);
 
+void Move(IWallItem item, WallLocation location) => MoveWallItem(item.Id, location);
+
+void Rotate(IFloorItem item, int dir) => Move(item, item.Location, dir);
 
 // Furni removal
 
+void PickupFloorItem(long id) => Send(Out.PickItemUpFromRoom, 2, (LegacyLong)id);
+void PickupWallItem(long id) => Send(Out.PickItemUpFromRoom, 1, (LegacyLong)id);
+void Pickup(IFurni furni) {
+    if (furni.Type == ItemType.Floor) {
+        PickupFloorItem(furni.Id);
+    } else if (furni.Type == ItemType.Wall) {
+        PickupWallItem(furni.Id);
+    }
+}
 
+// Stacking
+
+public void UpdateStackTile(long stackTileId, double height)
+    => Send(Out.StackingHelperSetCaretHeight, (LegacyLong)stackTileId, (int)Math.Round(height * 100.0));
+void UpdateStackTile(IFloorItem stackTile, double height)
+    => UpdateStackTile(stackTile.Id, height);
