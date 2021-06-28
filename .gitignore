@@ -4,3 +4,4 @@ omnisharp.json
 *.dib
 messages.ini
 *.7z
+cache/
