@@ -145,7 +145,8 @@ IInventory GetInventory(int timeout = DEFAULT_TIMEOUT)
 // Interactions
 public void Walk(int x, int y) => Send(Out.Move, x, y);
 
-public void Express(Expressions expression) => Send(Out.Expression, (int)expression);
+public void Express(int expression) => Send(Out.Expression, expression);
+public void Express(Expressions expression) => Express((int)expression);
 public void Wave() => Express(Expressions.Wave);
 
 public void Dance(int dance) => Send(Out.Dance, dance);
