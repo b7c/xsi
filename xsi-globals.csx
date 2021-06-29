@@ -11,7 +11,7 @@ using Xabbo.Core.Tasks;
 
 using static System.Console;
 
-const int DEFAULT_TIMEOUT = 5000;
+const int DEFAULT_TIMEOUT = 10000;
 
 CancellationTokenSource __cts;
 CancelKeyPress += (s, e) => {
