@@ -9,6 +9,11 @@ using Xabbo.Messages;
 static void Replace(this IPacket packet, params object[] values)
     => packet.ReplaceValues(values);
 
+static void ReplaceAt(this IPacket packet, int position, params object[] values) {
+    packet.Position = position;
+    packet.Replace(values);
+}
+
 // ReplaceString -> Replace
 static void Replace<T>(this IPacket packet, Func<T, T> modifier) {
     if (modifier is Func<string, string> transform) {
@@ -21,7 +26,16 @@ static void Replace<T>(this IPacket packet, Func<T, T> modifier) {
     }
 }
 
+static void ReplaceAt<T>(this IPacket packet, int position, Func<T, T> modifier) {
+    packet.Position = position;
+    packet.Replace(modifier);
+}
+
 // Default to string replacement
 static void Replace(this IPacket packet, Func<string, string> transform) {
     packet.ReplaceString(transform);
+}
+
+static void ReplaceAt(this IPacket packet, int position, Func<string, string> transform) {
+    packet.ReplaceString(transform, position);
 }
