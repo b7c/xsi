@@ -24,15 +24,14 @@ class Extension : GEarthExtension {
     public RoomManager RoomManager { get; }
     public TradeManager TradeManager { get; }
 
-    public Extension()
+    public Extension(int port)
         : base(new GEarthOptions {
             Title = "xsi",
             Description = "xabbo script interactive",
             Version = VERSION,
             Author = "b7",
-            ShowEventButton = true,
             ShowLeaveButton = true
-        }, 9092)
+        }, port)
     {
         ProfileManager = new ProfileManager(this);
         FriendManager = new FriendManager(this);
@@ -60,4 +59,14 @@ class Extension : GEarthExtension {
     }
 }
 
-Extension __xtn = new();
+int port = 9092;
+for (int i = 0; i < Args.Count; i++) {
+    if (Args[i] == "-p") {
+        if (++i < Args.Count) {
+            if (!int.TryParse(Args[i], out port))
+                port = 9092;
+        }
+    }
+}
+
+Extension __xtn = new(port);
