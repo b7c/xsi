@@ -30,7 +30,8 @@ try {
         __gameDataManager.GetFurniDataAsync()
     );
 
-    _ = __xtn.RunAsync();
+    Task extensionTask = __xtn.RunAsync()
+        .ContinueWith(t => Environment.Exit(-1));
 
     WriteLine("Waiting for connection...");
     await __xtn.ConnectSignal;
