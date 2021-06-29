@@ -218,7 +218,7 @@ foreach (var group in Furni.GroupBy(GetDescriptor)) {
 }
 ```
 This can also be done with your inventory. Just replace Furni with `GetInventory()`.\
-Note you must be in a room to load your inventory.\
+Note you must be in a room to load your inventory.
 ```cs
 foreach (var group in GetInventory().GroupBy(GetDescriptor))
   WriteLine($"{group.Count(),6:N0} x {group.Key.GetName()}");
