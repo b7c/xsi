@@ -37,3 +37,14 @@ static IEnumerable<TItem> OfKind<TItem>(this IEnumerable<TItem> items, string id
 
 static IEnumerable<TItem> OfKind<TItem>(this IEnumerable<TItem> items, IItem item)
     where TItem : IItem => items.OfKind(item.Type, item.Kind);
+
+static FurniCategory GetCategory(this IItem item) {
+    if (item is IInventoryItem inventoryItem) {
+        return inventoryItem.Category;
+    } else {
+        return item.GetInfo()?.Category ?? FurniCategory.Unknown;
+    }
+}
+
+static IEnumerable<TItem> OfCategory<TItem>(this IEnumerable<TItem> items, FurniCategory category)
+    where TItem : IItem => items.Where(item => item.GetCategory() == category);
